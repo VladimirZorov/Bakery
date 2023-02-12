@@ -5,7 +5,9 @@ import bakery.entities.bakedFoods.interfaces.BakedFood;
 import bakery.entities.drinks.interfaces.Drink;
 import bakery.entities.tables.interfaces.Table;
 
-import bakery.repositories.interfaces.*;
+import bakery.repositories.interfaces.DrinkRepository;
+import bakery.repositories.interfaces.FoodRepository;
+import bakery.repositories.interfaces.TableRepository;
 
 public class Main {
     public static void main(String[] args) {

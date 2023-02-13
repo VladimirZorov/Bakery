@@ -3,7 +3,6 @@ package bakery;
 import bakery.core.ControllerImpl;
 import bakery.core.EngineImpl;
 import bakery.core.interfaces.Controller;
-import bakery.entities.bakedFoods.BaseFood;
 import bakery.entities.bakedFoods.interfaces.BakedFood;
 import bakery.entities.drinks.interfaces.Drink;
 import bakery.entities.tables.interfaces.Table;

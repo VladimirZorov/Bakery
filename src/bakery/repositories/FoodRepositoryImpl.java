@@ -18,8 +18,9 @@ public class FoodRepositoryImpl implements FoodRepository<BakedFood> {
     @Override
     public BakedFood getByName(String name) {
         return this.bakedFoods.stream()
-                .filter(bakedFood -> bakedFood.getName().equals(name))
-                .findFirst().orElse(null);
+                .filter(d -> name.equals(d.getName()))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

@@ -5,6 +5,7 @@ import bakery.repositories.interfaces.FoodRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class FoodRepositoryImpl implements FoodRepository<BakedFood> {
 
@@ -16,16 +17,18 @@ public class FoodRepositoryImpl implements FoodRepository<BakedFood> {
 
     @Override
     public BakedFood getByName(String name) {
-        return null;
+        return this.bakedFoods.stream()
+                .filter(bakedFood -> bakedFood.getName().equals(name))
+                .findFirst().orElse(null);
     }
 
     @Override
     public Collection<BakedFood> getAll() {
-        return null;
+        return Collections.unmodifiableCollection(bakedFoods);
     }
 
     @Override
     public void add(BakedFood bakedFood) {
-
+        bakedFoods.add(bakedFood);
     }
 }

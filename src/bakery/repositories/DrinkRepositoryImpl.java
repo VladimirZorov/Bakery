@@ -5,6 +5,7 @@ import bakery.repositories.interfaces.DrinkRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class DrinkRepositoryImpl implements DrinkRepository<Drink> {
 
@@ -16,16 +17,18 @@ public class DrinkRepositoryImpl implements DrinkRepository<Drink> {
 
     @Override
     public Drink getByNameAndBrand(String drinkName, String drinkBrand) {
-        return null;
+        return this.drinks.stream().filter(drink -> drink.getName().equals(drinkName))
+                .filter(drink -> drink.getBrand().equals(drinkBrand))
+                .findFirst().orElse(null);
     }
 
     @Override
     public Collection<Drink> getAll() {
-        return null;
+        return Collections.unmodifiableCollection(drinks);
     }
 
     @Override
     public void add(Drink drink) {
-
+        drinks.add(drink);
     }
 }

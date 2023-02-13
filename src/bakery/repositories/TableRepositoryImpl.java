@@ -26,8 +26,12 @@ public class TableRepositoryImpl implements TableRepository<Table> {
 
     @Override
     public Table getByNumber(int number) {
-        this.tables.stream().filter(table -> table.getTableNumber()==number)
-                .findFirst();
-        return null;
+        Table myTable = null;
+        for (Table table : tables) {
+            if (table.getTableNumber()==number) {
+               myTable = table;
+            }
+        }
+        return myTable;
     }
 }

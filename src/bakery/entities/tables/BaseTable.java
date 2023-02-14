@@ -67,7 +67,7 @@ public abstract class BaseTable implements Table {
 
     @Override
     public boolean isReserved() {
-        return false;
+        return this.isReserved;
     }
 
     @Override

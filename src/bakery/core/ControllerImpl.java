@@ -87,11 +87,14 @@ public class ControllerImpl implements Controller {
         if (numberOfPeople <= 0) {
             throw new IllegalArgumentException(INVALID_NUMBER_OF_PEOPLE);
         }
+
         for (Table table1 : tableRepository.getAll()) {
             if (table1.getCapacity() >= numberOfPeople && !table1.isReserved()) {
                 table = table1;
+                break;
             }
         }
+
         if (table == null) {
             throw new IllegalArgumentException(String.format(RESERVATION_NOT_POSSIBLE, numberOfPeople));
         }
@@ -102,27 +105,50 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String orderFood(int tableNumber, String foodName) {
-        //TODO:
-        return null;
+        Table table = tableRepository.getByNumber(tableNumber);
+        if (table == null || !table.isReserved()) {
+            throw new IllegalArgumentException(String.format(WRONG_TABLE_NUMBER, tableNumber));
+        }
+        BakedFood bakedFood = foodRepository.getByName(foodName);
+        if (bakedFood == null) {
+            throw new IllegalArgumentException(String.format(NONE_EXISTENT_FOOD, foodName));
+        }
+        table.orderFood(bakedFood);
+        return String.format(FOOD_ORDER_SUCCESSFUL, tableNumber, foodName);
     }
 
     @Override
     public String orderDrink(int tableNumber, String drinkName, String drinkBrand) {
-        //TODO:
-        return null;
+        Table table = tableRepository.getByNumber(tableNumber);
+        if (table == null || !table.isReserved()) {
+            throw new IllegalArgumentException(String.format(WRONG_TABLE_NUMBER, tableNumber));
+        }
+        Drink drink = drinkRepository.getByNameAndBrand(drinkName, drinkBrand);
+        if (drink == null) {
+            throw new IllegalArgumentException(String.format(NON_EXISTENT_DRINK, drinkName, drinkBrand));
+        }
+        table.orderDrink(drink);
+        return String.format(DRINK_ORDER_SUCCESSFUL, tableNumber, drinkName, drinkBrand);
 
     }
 
     @Override
     public String leaveTable(int tableNumber) {
-        //TODO:
-        return null;
+       Table table = tableRepository.getByNumber(tableNumber);
+       double bill = table.getBill();
+       table.clear();
+        return String.format(BILL, tableNumber, bill);
     }
 
     @Override
     public String getFreeTablesInfo() {
-        //TODO:
-        return null;
+        StringBuilder sb = new StringBuilder();
+        for (Table table : tableRepository.getAll()) {
+            if (!table.isReserved()) {
+               sb.append(table.getFreeTableInfo()).append(System.lineSeparator());
+            }
+        }
+        return sb.toString().trim();
     }
 
     @Override

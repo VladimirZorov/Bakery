@@ -3,6 +3,7 @@ package bakery.repositories;
 import bakery.entities.tables.interfaces.Table;
 import bakery.repositories.interfaces.TableRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -11,7 +12,7 @@ public class TableRepositoryImpl implements TableRepository<Table> {
     private Collection<Table> tables;
 
     public TableRepositoryImpl() {
-        this.tables = tables;
+        this.tables = new ArrayList<>();
     }
 
     @Override

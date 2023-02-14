@@ -4,7 +4,11 @@ import bakery.core.interfaces.Controller;
 import bakery.entities.bakedFoods.Bread;
 import bakery.entities.bakedFoods.Cake;
 import bakery.entities.bakedFoods.interfaces.BakedFood;
+import bakery.entities.drinks.Tea;
+import bakery.entities.drinks.Water;
 import bakery.entities.drinks.interfaces.Drink;
+import bakery.entities.tables.InsideTable;
+import bakery.entities.tables.OutsideTable;
 import bakery.entities.tables.interfaces.Table;
 import bakery.repositories.DrinkRepositoryImpl;
 import bakery.repositories.FoodRepositoryImpl;
@@ -31,13 +35,13 @@ public class ControllerImpl implements Controller {
     @Override
     public String addFood(String type, String name, double price) {
         BakedFood bakedFood = foodRepository.getByName(name);
+        if (foodRepository.getAll().contains(bakedFood)) {
+            throw new IllegalArgumentException(String.format(FOOD_OR_DRINK_EXIST, type, name));
+        }
         if (type.equals("Bread")) {
             bakedFood = new Bread(name, price);
         } else if (type.equals("Cake")) {
             bakedFood = new Cake(name, price);
-        }
-        if (foodRepository.getByName(name).equals(name)) {
-            throw new IllegalArgumentException(String.format(FOOD_OR_DRINK_EXIST, type, name));
         }
 
         foodRepository.add(bakedFood);
@@ -46,20 +50,54 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String addDrink(String type, String name, int portion, String brand) {
-        //TODO:
-        return null;
+       Drink drink = drinkRepository.getByNameAndBrand(name, brand);
+       if (drinkRepository.getAll().contains(drink)) {
+           throw new IllegalArgumentException(String.format(FOOD_OR_DRINK_EXIST, name, brand));
+       }
+       if (type.equals("Water")) {
+           drink = new Water(name, portion, brand);
+       } else if (type.equals("Tea")) {
+           drink = new Tea(name, portion, brand);
+       }
+
+       drinkRepository.add(drink);
+        return String.format(DRINK_ADDED, name, brand);
     }
 
     @Override
     public String addTable(String type, int tableNumber, int capacity) {
-        //TODO:
-        return null;
+        Table table = tableRepository.getByNumber(tableNumber);
+        if (tableRepository.getAll().contains(table)) {
+            throw new IllegalArgumentException(String.format(TABLE_EXIST, tableNumber));
+        }
+
+        if (type.equals("InsideTable")) {
+            table = new InsideTable(tableNumber, capacity);
+        } else if (type.equals("OutsideTable")) {
+            table = new OutsideTable(tableNumber, capacity);
+        }
+
+        tableRepository.add(table);
+        return String.format(TABLE_ADDED, tableNumber);
     }
 
     @Override
     public String reserveTable(int numberOfPeople) {
-        //TODO:
-        return null;
+        Table table = null;
+        if (numberOfPeople <= 0) {
+            throw new IllegalArgumentException(INVALID_NUMBER_OF_PEOPLE);
+        }
+        for (Table table1 : tableRepository.getAll()) {
+            if (table1.getCapacity() >= numberOfPeople && !table1.isReserved()) {
+                table = table1;
+            }
+        }
+        if (table == null) {
+            throw new IllegalArgumentException(String.format(RESERVATION_NOT_POSSIBLE, numberOfPeople));
+        }
+
+        table.reserve(numberOfPeople);
+        return String.format(TABLE_RESERVED, table.getTableNumber(), numberOfPeople);
     }
 
     @Override

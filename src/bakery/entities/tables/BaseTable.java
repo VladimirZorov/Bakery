@@ -39,9 +39,9 @@ public abstract class BaseTable implements Table {
     }
 
     public void setNumberOfPeople(int numberOfPeople) {
-        if (numberOfPeople <= 0) {
-            throw new IllegalArgumentException(INVALID_NUMBER_OF_PEOPLE);
-        }
+//        if (numberOfPeople <= 0) {
+//            throw new IllegalArgumentException(INVALID_NUMBER_OF_PEOPLE);
+//        }
         this.numberOfPeople = numberOfPeople;
     }
 
@@ -77,10 +77,11 @@ public abstract class BaseTable implements Table {
 
     @Override
     public void reserve(int numberOfPeople) {
-        isReserved = true;
-        this.price = this.pricePerPerson * numberOfPeople;
-        this.setNumberOfPeople(numberOfPeople);
-    }
+            isReserved = true;
+            this.price = this.pricePerPerson * numberOfPeople;
+            this.setNumberOfPeople(numberOfPeople);
+        }
+
 
     @Override
     public void orderFood(BakedFood food) {

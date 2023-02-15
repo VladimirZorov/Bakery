@@ -45,22 +45,22 @@ public class ControllerImpl implements Controller {
         }
 
         foodRepository.add(bakedFood);
-            return String.format(FOOD_ADDED, name, type);
+        return String.format(FOOD_ADDED, name, type);
     }
 
     @Override
     public String addDrink(String type, String name, int portion, String brand) {
-       Drink drink = drinkRepository.getByNameAndBrand(name, brand);
-       if (drinkRepository.getAll().contains(drink)) {
-           throw new IllegalArgumentException(String.format(FOOD_OR_DRINK_EXIST, name, brand));
-       }
-       if (type.equals("Water")) {
-           drink = new Water(name, portion, brand);
-       } else if (type.equals("Tea")) {
-           drink = new Tea(name, portion, brand);
-       }
+        Drink drink = drinkRepository.getByNameAndBrand(name, brand);
+        if (drinkRepository.getAll().contains(drink)) {
+            throw new IllegalArgumentException(String.format(FOOD_OR_DRINK_EXIST, name, brand));
+        }
+        if (type.equals("Water")) {
+            drink = new Water(name, portion, brand);
+        } else if (type.equals("Tea")) {
+            drink = new Tea(name, portion, brand);
+        }
 
-       drinkRepository.add(drink);
+        drinkRepository.add(drink);
         return String.format(DRINK_ADDED, name, brand);
     }
 
@@ -134,9 +134,9 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String leaveTable(int tableNumber) {
-       Table table = tableRepository.getByNumber(tableNumber);
-       double bill = table.getBill();
-       table.clear();
+        Table table = tableRepository.getByNumber(tableNumber);
+        double bill = table.getBill();
+        table.clear();
         return String.format(BILL, tableNumber, bill);
     }
 
@@ -145,7 +145,7 @@ public class ControllerImpl implements Controller {
         StringBuilder sb = new StringBuilder();
         for (Table table : tableRepository.getAll()) {
             if (!table.isReserved()) {
-               sb.append(table.getFreeTableInfo()).append(System.lineSeparator());
+                sb.append(table.getFreeTableInfo()).append(System.lineSeparator());
             }
         }
         return sb.toString().trim();
@@ -153,7 +153,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String getTotalIncome() {
-        //TODO:
-        return null;
+        double totalBill = 0;
+        return String.format(TOTAL_INCOME, totalBill);
     }
 }
